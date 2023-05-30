@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Table from './Table';
+import Pages from './Pages';
 
-export default function Filtering({showPagiNation,controlPagiNation}) {
+export default function Filtering({ showPagiNation, controlPagiNation }) {
   const [users, setUsers] = useState([]);
   const [value, setValue] = useState('');
+  const [perPage, setPerPage] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,8 +19,13 @@ export default function Filtering({showPagiNation,controlPagiNation}) {
         });
 
         setUsers(filteredData);
+        setPerPage(filteredData.slice(0,4));
       });
-      setValue('');
+    setValue('');
+  };
+
+  const pageHandler = (pageNumber) => {
+    setPerPage(users.slice(pageNumber * 3 - 3, pageNumber * 3));
   };
 
   return (
@@ -33,10 +40,16 @@ export default function Filtering({showPagiNation,controlPagiNation}) {
         <input type="submit" value="Submit" />
       </form>
       <br />
-      <button onClick={()=>controlPagiNation(true)}>Reset</button>
+      <button onClick={() => controlPagiNation(true)}>Reset</button>
       <br />
       {users.length > 0 ? (
-        !showPagiNation &&  <Table users={users} />
+        !showPagiNation && (
+          <>
+            <Table users={perPage} />
+            <br />
+            <Pages users={users} pageHandler={pageHandler} />
+          </>
+        )
       ) : (
         <p>No matching users found.</p>
       )}
