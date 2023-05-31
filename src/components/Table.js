@@ -1,10 +1,15 @@
 import React from 'react';
 
-export default function Table(props){
+export default function Table(props) {
   const users = props.users;
-  return(
+
+  if (users.length <= 0) {
+    return <p>No users found.</p>;
+  }
+
+  return (
     <>
-    <br />
+      <br />
       <table border='1px'>
         <thead>
           <tr>
@@ -16,15 +21,17 @@ export default function Table(props){
           </tr>
         </thead>
         <tbody>
-          {users.map((user)=><tr key={user.id}>
-            <td>{user.id}</td>
-            <td>{user.name}</td>
-            <td>{user.email}</td>
-            <td>{user.phone}</td>
-            <td>{user.address.city}</td>
-          </tr>)}
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.phone}</td>
+              <td>{user.address.city}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </>
   );
-} 
+}
