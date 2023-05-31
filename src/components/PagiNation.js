@@ -51,12 +51,14 @@ export default function PagiNation() {
   };
 
   const handleReset = () => {
-    setSortBy('');
-    // Reset any other relevant state variables here
-    // For example, if you have filtering state variables, reset them as well
-    // setFilterValue('');
-    // setFilteredUsers([]);
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((response) => response.json())
+      .then((data) => {
+        setUsers(data);
+        setPerPage(data.slice(0, 4));
+      });
   };
+  
 
   return (
     <>
