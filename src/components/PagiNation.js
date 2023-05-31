@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Pages from './Pages';
 import Table from './Table';
+import Filtering from './Filtering';
 
 export default function PagiNation() {
   const [users, setUsers] = useState([]);
@@ -19,16 +20,24 @@ export default function PagiNation() {
   useEffect(() => {
     // Apply sorting when sortBy state changes
     if (sortBy === 'name') {
-      const sortedData = [...users].sort((a, b) => a.name.localeCompare(b.name));
+      const sortedData = [...users].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
       setPerPage(sortedData.slice(0, 4));
     } else if (sortBy === 'phone') {
-      const sortedData = [...users].sort((a, b) => a.phone.localeCompare(b.phone));
+      const sortedData = [...users].sort((a, b) =>
+        a.phone.localeCompare(b.phone)
+      );
       setPerPage(sortedData.slice(0, 4));
     } else if (sortBy === 'email') {
-      const sortedData = [...users].sort((a, b) => a.email.localeCompare(b.email));
+      const sortedData = [...users].sort((a, b) =>
+        a.email.localeCompare(b.email)
+      );
       setPerPage(sortedData.slice(0, 4));
     } else if (sortBy === 'address') {
-      const sortedData = [...users].sort((a, b) => a.address.city.localeCompare(b.address));
+      const sortedData = [...users].sort((a, b) =>
+        a.address.city.localeCompare(b.address)
+      );
       setPerPage(sortedData.slice(0, 4));
     }
   }, [sortBy, users]);
@@ -41,13 +50,32 @@ export default function PagiNation() {
     setSortBy(e.target.value);
   };
 
+  const handleReset = () => {
+    setSortBy('');
+    // Reset any other relevant state variables here
+    // For example, if you have filtering state variables, reset them as well
+    // setFilterValue('');
+    // setFilteredUsers([]);
+  };
+
   return (
     <>
+      <Filtering
+        setUsers={setUsers}
+        setPerPage={setPerPage}
+        handleReset={handleReset}
+      />
+      <br />
       <Table users={perPage} />
       <br />
       <Pages users={users} pageHandler={pageHandler} />
       <br />
-      <select name="sortby" id="sortby" value={sortBy} onChange={handleSortChange}>
+      <select
+        name="sortby"
+        id="sortby"
+        value={sortBy}
+        onChange={handleSortChange}
+      >
         <option value="">Select an option</option>
         <option value="name">Name</option>
         <option value="phone">Phone</option>
